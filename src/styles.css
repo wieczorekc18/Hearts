@@ -1,0 +1,167 @@
+body{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(6, 6, 17);
+}
+
+.hearts-header{
+    color: red;
+}
+
+.hearts-title{
+    color: rgb(52, 205, 243);
+}
+
+.red-card{
+    color: red;
+}
+
+.game{
+    margin-top: 1%;
+    
+    display: flex;
+}
+.gameboard{
+    height: 105vh;
+    width: 90vw;
+    background-color: green;
+    position: relative;
+}
+
+.card{
+    background-color: rgb(255, 255, 255);
+    height: 80px;
+    width: 40px;
+    margin: 1px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px 3px black;
+}
+
+.select{
+    background-color: rgb(199, 197, 197);
+}
+
+.player-hand{
+    list-style: none;
+    display: flex;
+    margin-left: 80px;
+    margin-top: -50px;
+}
+
+ul{
+    list-style: none;
+}
+
+.hands{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rot{
+    transform: rotate(90deg);
+    margin-bottom: -40px;
+}
+
+.comp-player-1{
+    display: flex;
+}
+
+.comp-player-2{
+    /* margin-left: 50px; */
+}
+
+.hidden-card{
+    background-image: url("/cardback.png");
+    background-size: 40px 80px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hide-button{
+    display: none;
+}
+
+.message{
+    background-color: rgb(228, 220, 147);
+    padding: 20px;
+    position: absolute;
+    z-index: 1;
+    margin-top: -400px;
+    margin-left: 300px;
+}
+
+.play-one-message{
+    background-color: rgb(228, 220, 147);
+    padding: 20px;
+    position: absolute;
+    z-index: 1;
+    margin-top: -500px;
+    margin-left: 300px;
+}
+
+.rules-text{
+    visibility: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+p.show-rules{
+    visibility: visible;
+    display: flex;
+    background-color: rgb(228, 220, 147);
+    padding: 20px;
+    width: 800px;
+    position: absolute;
+    z-index: 5;
+}
+
+.trick{
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    margin-top: -400px;
+    margin-left: 150px;
+    width: 200px;
+    height: 300px;
+    /* flex-flow: row-reverse wrap; */
+    /* change this */
+    /* bottom: -40;
+    margin-left: 200px;*/
+    list-style: none;
+}
+
+/* other properties of these cards are likely interfering */
+
+
+/*player0 is the user*/
+.player0{  
+    position: absolute;
+    z-index: 3;
+    margin-top: 150px;
+    margin-left: 150px;
+}
+
+
+.player1{
+    position: absolute;
+    z-index: 3;
+    margin-top: 50px;
+    /* margin-left: 100px; */
+}
+
+.player2{
+    position: absolute;
+    z-index: 3;
+    margin-top: 0px;
+    margin-left: 150px;
+}
+
+.player3{
+    position: absolute;
+    z-index: 3;
+    margin-top: 50px;
+    margin-left: 300px;
+} 

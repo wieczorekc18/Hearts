@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hearts the Card Game</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+
+<body>
+    <div class="hearts-header">
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+    </div>
+    <h1 class="hearts-title">Hearts Card Game</h1>
+    <div class="hearts-header">
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+        &hearts;&hearts;&hearts;&hearts;
+    </div>
+    <br>
+    <button class="rules-button">Rules</button>
+    <p class="rules-text">
+        THE RULES <br> <br>
+        Scoring <br>
+        Hearts is a four-handed card game. The goal of the game is to avoid accruing negative points, and get positive points if
+        possible. The Jack of Diamonds is the only card that is worth positive points, and it is worth 10 points. Each heart
+        collected counts as 1 point against you, and the Queen of Spades counts as 13 points against you. If however, you manage
+        to collect all 13 hearts as well as the Queen of Spades those 26 negative points turn positive for you. This is called
+        "shooting the moon."
+        <br>
+        <br>
+        The Deal
+        <br>
+        Each round the full deck is dealt out so each player receives 13 cards. Each player selects 3 cards to pass to another
+        player. The first round cards are passed to the left, the second round to the right, the third round accross the middle,
+        and the fourth round you hold your cards.
+        <br>
+        <br>
+        The Play
+        <br>
+        After the deal and the swapping of cards, which occurs unless it is the fourth round or a multiple of the fourth round,
+        the player with the 2 of clubs leads. Players take turns playing a card in a clockwise fashion until each player has
+        played one card. Once four cards have been played, the highest card of the suit that led wins the trick and takes all
+        four cards into their own pile which is counted at the end of the round. The player who won the last trick leads with a
+        card of their choosing. Players must follow suit if they are able, but if unable to follow suit, players may play any
+        card of their choosing. The exception to this is on the very first trick where no hearts may be played and the Queen of
+        Spades also may not be played. Before any player can lead a trick with hearts, heart must first be "broken" during the
+        playing of another trick. This means that a suit other than hearts must have been lead, and a player who didn't have any
+        cards of the suit that was lead would break hearts on their turn. Once hearts have been broken any player can lead with
+        hearts. If hearts are lead all players must play a heart higher than the highest heart that has been played during that
+        trick if they are able.
+        <br>
+        <br>
+        The Count
+        <br>
+        After all 52 cards have been played each player counts the cards in their pile. The only cards that count towards
+        anything are the Jack of Diamonds +10 the Queen of Spades -13 and each of the thirteen hearts which are each worth -1
+        points against you.
+        <br>
+        <br>
+        The End?
+        <br>
+        The game never officially ends. Play as long as you like.
+
+    </p>
+    <button class="new-game-button">New Game</button>
+    <div class="game">
+        <div class="scoreboard">
+
+        </div>
+        <div class="gameboard">
+
+        </div>
+        <div>
+
+        </div>
+    </div>
+    <script type="application/javascript" src="./dist/bundle.js"></script>
+</body>
+
+</html>

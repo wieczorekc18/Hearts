@@ -1,9 +1,18 @@
 
+let playerScore = 0;
+let comp0Score = 0;
+let comp1Score = 0;
+let comp2Score = 0;
+
+
+// turn event listener functions into 
+
 const gameboard = document.querySelector(".gameboard")
+const score = document.querySelector(".scoreboard")
 const start = document.querySelector(".new-game-button")
 const rules = document.querySelector(".rules-button")
 const rulesText = document.querySelector(".rules-text")
-rules.addEventListener("click", ()=>{
+rules.addEventListener("click", () => {
     rulesText.classList.toggle("show-rules")
 })
 start.addEventListener("click", () => {
@@ -11,7 +20,7 @@ start.addEventListener("click", () => {
     let game = new Game
     gameboard.append(game.game)
     // for(let i=0; i < 200; i++){
-        game.playRound()
+    game.playRound()
     // }
 })
 
@@ -112,7 +121,7 @@ class Game {
         this.starter
         this.playRound = this.playRound.bind(this)
         // this.passedAlready = false
-        this.firstTrick = true 
+        this.firstTrick = true
         this.heartsBroken = false
         this.round0 = this.round0.bind(this)
         this.round1 = this.round1.bind(this)
@@ -122,7 +131,7 @@ class Game {
         this.players = []
     }
 
-    playRound(){
+    playRound() {
         const that = this
         that.players = []
         while (that.game.firstChild) {
@@ -152,9 +161,30 @@ class Game {
                     that.round0()
                     gameboard.removeChild(passMessage)
                     that.thePlay()
-                        .then(()=>{
-                            //debugger
-                            setTimeout(() => that.thePlay(), 2000)
+                        .then(() => {
+                            setTimeout(() => that.thePlay().then(() => {
+                                setTimeout(() => that.thePlay().then(() => {
+                                    setTimeout(() => that.thePlay().then(() => {
+                                        setTimeout(() => that.thePlay().then(() => {
+                                            setTimeout(() => that.thePlay().then(() => {
+                                                setTimeout(() => that.thePlay().then(() => {
+                                                    setTimeout(() => that.thePlay().then(() => {
+                                                        setTimeout(() => that.thePlay().then(() => {
+                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                setTimeout(() => that.thePlay().then(() => {
+                                                                    setTimeout(() => that.thePlay().then(() => {
+                                                                        setTimeout(() => that.thePlay(), 3000)
+                                                                    }), 3000)
+                                                                }), 3000)
+                                                            }), 3000)
+                                                        }), 3000)
+                                                    }), 3000)
+                                                }), 3000)
+                                            }), 3000)
+                                        }), 3000)
+                                    }), 3000)
+                                }), 3000)
+                            }), 3000)
                         })
                 })
         } else if (that.roundCounter === 1) {
@@ -175,7 +205,7 @@ class Game {
         /// chain the thens
     }
 
-    thePlay(){
+    thePlay() {
         const that = this
         return new Promise((resolve, reject) => {
             let idx
@@ -184,41 +214,14 @@ class Game {
             that.players.forEach(player => {
                 allCards = allCards.concat(player.cards)
             })
-            if(allCards.length > 0){
-                if(that.firstTrick){
+            if (allCards.length > 0) {
+                if (that.firstTrick) {
                     that.players.forEach(player => {
-                        if (player.hasTwoOfClubs()){
+                        if (player.hasTwoOfClubs()) {
                             that.starter = player
                         }
                     })
                     idx = that.players.indexOf(that.starter)
-                    that.players[idx].pickLead(that).then((res) => {
-                        trick = new Trick(res)
-                        that.winner = that.players[idx]
-                        idx = ((idx + 1) % 4)
-
-                        // that.players[idx].playOne(trick)
-                        setTimeout(() => that.players[idx].playOne(trick)
-                        .then(() => {
-                            if (trick.changeHighest()) {
-                                that.winner = that.players[idx]
-                            }
-                            idx = ((idx + 1) % 4)
-                            setTimeout(() => that.players[idx].playOne(trick)
-                                .then(() => {
-                                if (trick.changeHighest()) {
-                                    that.winner = that.players[idx]
-                                }
-                                idx = ((idx + 1) % 4)
-                                setTimeout(() => {
-                                    that.players[idx].playOne(trick).then(() => resolve("success"))
-                                    that.firstTrick = false
-                                }, 2000)
-                                })
-                                , 2000)}), 2000)})
-                }else{
-                    //debugger
-                    idx = that.players.indexOf(that.winner)
                     that.players[idx].pickLead(that).then((res) => {
                         trick = new Trick(res)
                         that.winner = that.players[idx]
@@ -238,23 +241,63 @@ class Game {
                                         }
                                         idx = ((idx + 1) % 4)
                                         setTimeout(() => {
-                                            that.players[idx].playOne(trick)
-                                            resolve("success")
+                                            that.players[idx].playOne(trick).then(() => {
+                                                if (trick.changeHighest()) {
+                                                    that.winner = that.players[idx]
+                                                }
+                                                trick.logScore(that.winner)
+                                                resolve("success")
+                                            })
+                                            that.firstTrick = false
+                                        }, 2000)
+                                    })
+                                    , 2000)
+                            }), 2000)
+                    })
+                } else {
+                    debugger
+                    idx = that.players.indexOf(that.winner)
+                    that.players[idx].pickLead(that).then((res) => {
+                        trick = new Trick(res)
+                        that.winner = that.players[idx]
+                        idx = ((idx + 1) % 4)
+                        debugger
+                        setTimeout(() => that.players[idx].playOne(trick)
+                            .then(() => {
+                                if (trick.changeHighest()) {
+                                    that.winner = that.players[idx]
+                                }
+                                idx = ((idx + 1) % 4)
+                                setTimeout(() => that.players[idx].playOne(trick)
+                                    .then(() => {
+                                        if (trick.changeHighest()) {
+                                            that.winner = that.players[idx]
+                                        }
+                                        idx = ((idx + 1) % 4)
+                                        setTimeout(() => {
+                                            that.players[idx].playOne(trick).then(() => {
+                                                if (trick.changeHighest()) {
+                                                    that.winner = that.players[idx]
+                                                }
+                                                trick.logScore(that.winner)
+                                                resolve("success")
+                                            })
                                         }, 2000)
                                     })
                                     , 2000)
                             }), 2000)
                     })
                 }
-            }else{
-                //show scoreboard
+            }
+            if (allCards.length === 0) {
+                trick.displayScore()
                 that.ended = true
                 resolve("success")
             }
         })
     }
 
-    round0(){
+    round0() {
         const that = this
         that.comp0.selectThree(that.comp1)
         that.comp1.selectThree(that.comp2)
@@ -266,7 +309,7 @@ class Game {
         that.roundCounter += 1
     }
 
-    round1(){
+    round1() {
         const that = this
         that.comp2.selectThree(that.comp1)
         that.comp1.selectThree(that.comp0)
@@ -278,7 +321,7 @@ class Game {
         that.roundCounter += 1
     }
 
-    round2(){
+    round2() {
         const that = this
         that.comp2.selectThree(that.comp0)
         that.comp0.selectThree(that.comp2)
@@ -290,7 +333,7 @@ class Game {
         that.roundCounter += 1
     }
 
-    round3(){
+    round3() {
         const that = this
         that.roundCounter = 0
     }
@@ -311,8 +354,8 @@ class ComputerHand {
         this.hasTwoOfClubs = this.hasTwoOfClubs.bind(this)
     }
 
-    hasTwoOfClubs(){
-        const that = this 
+    hasTwoOfClubs() {
+        const that = this
         let ans = false
         that.cards.forEach(card => {
             if (card.suit === "Clubs" && card.rank === 2) {
@@ -347,7 +390,9 @@ class ComputerHand {
 
     passThree(unwanted) {
         unwanted = unwanted.map(card => {
-            this.compHand.removeChild(card.cardLi)
+            if(card.cardLi.parentElement){
+                this.compHand.removeChild(card.cardLi)
+            }
             return card
         })
         return unwanted
@@ -362,26 +407,26 @@ class ComputerHand {
         that.cards = that.cards.concat(passedCards)
     }
 
-    pickLead(game){
+    pickLead(game) {
         let starter
         const that = this
         return new Promise((resolve, reject) => {
-            if(game.firstTrick){
+            if (game.firstTrick) {
                 that.cards.forEach(card => {
-                    if(card.suit === "Clubs" && card.rank === 2){
+                    if (card.suit === "Clubs" && card.rank === 2) {
                         starter = card
                     }
                 })
-            }else if(game.heartsBroken){
+            } else if (game.heartsBroken) {
                 starter = that.cards.slice(0, 1)
-            }else{
+            } else {
                 that.cards.forEach(card => {
                     if (card.suit !== "Hearts") {
                         starter = card
                         // break?
                     }
                 })
-                if(!starter){
+                if (!starter) {
                     starter = that.cards.slice(0, 1)
                 }
             }
@@ -396,20 +441,20 @@ class ComputerHand {
         })
     }
 
-    playOne(trick){
-        const that = this 
+    playOne(trick) {
+        const that = this
         return new Promise((resolve, reject) => {
 
-        
+
             let choice
             //if trick.pile[0] is 2 clubs
             let playable = that.cards.filter(card => {
-                if(trick.suit !== "Hearts"){
-                    if(card.suit === trick.suit){
+                if (trick.suit !== "Hearts") {
+                    if (card.suit === trick.suit) {
                         return card
-                    }    
-                }else{
-                    if(card.rank > trick.rank && card.suit === "Hearts"){
+                    }
+                } else {
+                    if (card.rank > trick.rank && card.suit === "Hearts") {
                         return card
                     }
                 }
@@ -417,16 +462,16 @@ class ComputerHand {
             if (trick.suit === "Clubs" && trick.pile[0].rank === 2) {
                 playable = playable.filter(card => card.suit !== "Hearts" && (card.rank !== 12 && card.suit !== "Spades"))
             }
-            if (playable.length > 0){
+            if (playable.length > 0) {
                 choice = playable[0]
-            }else if(trick.suit === "Hearts"){
+            } else if (trick.suit === "Hearts") {
                 let hearts = that.cards.filter(card => card.suit === trick.suit)
-                if(hearts.first){
+                if (hearts.first) {
                     choice = hearts.first
-                }else{
+                } else {
                     choice = that.cards.first
                 }
-            }else{
+            } else {
                 choice = that.cards[0]
             }
             let idx = that.cards.indexOf(choice)
@@ -440,6 +485,7 @@ class ComputerHand {
         })
     }
 }
+
 
 class PlayerHand {
     constructor(deck) {
@@ -479,26 +525,30 @@ class PlayerHand {
 
     }
 
-    pickLead(game){
+    pickLead(game) {
         const that = this
         let choice
         return new Promise((resolve, reject) => {
-            if(game.firstTrick && that.hasTwoOfClubs()){
+            if (game.firstTrick && that.hasTwoOfClubs()) {
                 let twoClubsMessage = document.createElement("DIV")
                 gameboard.append(twoClubsMessage)
                 twoClubsMessage.append("You have the 2 of Clubs Begin the Round by playing it")
                 twoClubsMessage.classList.add("message")
                 choice = that.cards[0]
                 choice.cardLi.addEventListener("click", () => {
-                    choice.cardLi.parentElement.removeChild(choice.cardLi)
+                    if (choice.cardLi.parentElement){
+                        choice.cardLi.parentElement.removeChild(choice.cardLi)
+                    }
                     that.cards = that.cards.slice(1)
-                    gameboard.removeChild(twoClubsMessage)
+                    if(twoClubsMessage.parentElement){
+                        gameboard.removeChild(twoClubsMessage)
+                    }
                     let theCard = choice
                     theCard.cardLi.classList.add("player0")
                     resolve(theCard)
                 })
-                
-            }else if(game.heartsBroken){
+
+            } else if (game.heartsBroken) {
                 let pickLeadMessage = document.createElement("DIV")
                 gameboard.append(pickLeadMessage)
                 pickLeadMessage.append("You won the last round lead with the card of your choice")
@@ -506,8 +556,19 @@ class PlayerHand {
                 that.cards.forEach(card => {
                     card.cardLi.addEventListener("click", () => {
                         choice = card
-                        gameboard.removeChild(pickLeadMessage)
-                        choice.cardLi.parentElement.removeChild(choice.cardLi)
+                        if (pickLeadMessage.parentElement) {
+                            gameboard.removeChild(pickLeadMessage)
+                        }
+                        that.cards = that.cards.map(card => {
+                            let dup = card.cardLi
+                            if (card.cardLi.parentElement) {
+                                card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                            }
+                            return card
+                        })
+                        if (choice.cardLi.parentElement) {
+                            choice.cardLi.parentElement.removeChild(choice.cardLi)
+                        }
                         let idx = that.cards.indexOf(choice)
                         let left = that.cards.slice(0, idx)
                         let right = that.cards.slice(idx + 1)
@@ -517,20 +578,33 @@ class PlayerHand {
                         resolve(theCard)
                     })
                 })
-            }else{
+            } else {
                 let pickLeadMessage = document.createElement("DIV")
                 gameboard.append(pickLeadMessage)
                 pickLeadMessage.append("You won the last round lead with the card of your choice")
                 pickLeadMessage.classList.add("message")
                 let options = that.cards.filter(card => card.suit !== "Hearts")
-                if(options.length > 0){ 
+                if (options.length > 0) {
                     that.cards.forEach(card => {
-                        if(card.suit !== "Hearts"){
+                        if (card.suit !== "Hearts") {
                             card.cardLi.addEventListener("click", () => {
                                 choice = card
-                                //debugger
-                                choice.cardLi.parentElement.removeChild(choice.cardLi)
-                                gameboard.removeChild(pickLeadMessage)
+                                debugger
+                                let dup
+                                if (choice.cardLi.parentElement) {
+                                    choice.cardLi.parentElement.removeChild(choice.cardLi)
+                                }
+                                that.cards = that.cards.map(card => {
+                                    dup = card.cardLi
+                                    if (card.cardLi.parentElement) {
+                                        card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                                    }
+                                    return card
+                                })
+                                debugger
+                                if (pickLeadMessage.parentElement) {
+                                    gameboard.removeChild(pickLeadMessage)
+                                }
                                 let idx = that.cards.indexOf(choice)
                                 let left = that.cards.slice(0, idx)
                                 let right = that.cards.slice(idx + 1)
@@ -542,12 +616,23 @@ class PlayerHand {
                         }
 
                     })
-                }else{
+                } else {
                     that.cards.forEach(card => {
                         card.cardLi.addEventListener("click", () => {
                             choice = card
-                            choice.cardLi.parentElement.removeChild(choice.cardLi)
-                            gameboard.removeChild(pickLeadMessage)
+                            if (choice.cardLi.parentElement) {
+                                choice.cardLi.parentElement.removeChild(choice.cardLi)
+                            }
+                            that.cards = that.cards.map(card => {
+                                let dup = card.cardLi
+                                if (card.cardLi.parentElement) {
+                                    card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                                }
+                                return card
+                            })
+                            if (pickLeadMessage.parentElement) {
+                                gameboard.removeChild(pickLeadMessage)
+                            }
                             let idx = that.cards.indexOf(choice)
                             let left = that.cards.slice(0, idx)
                             let right = that.cards.slice(idx + 1)
@@ -562,27 +647,28 @@ class PlayerHand {
         })
     }
 
-    playOne(trick){
+    playOne(trick) {
         //if trick.pile[0] is 2 clubs
-        const that = this 
+        const that = this
         let options
         let choice
+        debugger
         return new Promise((resolve, reject) => {
             let playOneMessage = document.createElement("DIV")
             gameboard.append(playOneMessage)
             playOneMessage.classList.add("play-one-message")
-            if(trick.suit === "Hearts"){
+            if (trick.suit === "Hearts") {
                 playOneMessage.append("Your turn remember you must go up in hearts if you can")
                 trick.pile
                 options = that.cards.filter(card => card.suit === "Hearts" && card.rank > highest)
                 if (options.length === 0) {
                     options = that.cards.filter(card => card.suit === trick.suit)
                 }
-            }else{
+            } else {
                 playOneMessage.append("Your turn")
                 options = that.cards.filter(card => card.suit === trick.suit)
             }
-            if(options.length === 0){
+            if (options.length === 0) {
                 options = that.cards
             }
             if (trick.suit === "Clubs" && trick.pile[0].rank === 2) {
@@ -591,23 +677,38 @@ class PlayerHand {
             if (options.length === 0) {
                 options = that.cards
             }
-            
-            options.forEach(card =>{
+
+            options.forEach(card => {
                 card.cardLi.addEventListener("click", () => {
                     choice = card
-                    //debugger
-                    choice.cardLi.parentElement.removeChild(choice.cardLi)
-                    gameboard.removeChild(playOneMessage)
+                    debugger
+
+                    if (choice.cardLi.parentElement) {
+                        choice.cardLi.parentElement.removeChild(choice.cardLi)
+                    }
+                    if (playOneMessage.parentElement) {
+                        gameboard.removeChild(playOneMessage)
+                    }
                     let idx = that.cards.indexOf(choice)
-                    let left = that.cards.slice(0, idx)
-                    let right = that.cards.slice(idx + 1)
-                    that.cards = left.concat(right)
-                    choice.cardLi.classList.add("player0")
-                    trick.accept(choice)
-                    that.cards = that.cards.map(card => {
-                        let dup = card 
-                        return dup
-                    })
+                    if (idx > -1) {
+                        let left = that.cards.slice(0, idx)
+                        let right = that.cards.slice(idx + 1)
+                        that.cards = left.concat(right)
+                        that.cards = that.cards.map(card => {
+                            let dup = card.cardLi
+                            if (card.cardLi.parentElement) {
+                                card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                            }
+                            return card
+                        })
+                        debugger
+                        choice.cardLi.classList.add("player0")
+                        trick.accept(choice)
+                    }
+                    // that.cards = that.cards.map(card => {
+                    //     let dup = card 
+                    //     return dup
+                    // })
                     resolve(choice)
                 })
             })
@@ -622,9 +723,17 @@ class PlayerHand {
             that.cards = that.cards.map(card => {
                 card.cardLi.addEventListener("click", () => {
                     unwanted.length < 3 ? card.cardLi.classList.toggle("select") : card.cardLi.classList.remove("select")
+                    // if (card.cardLi.classList.contains("select")) {
+                    //     unwanted.push(card)
+                    // } else {
+                    //     let i = unwanted.indexOf(card)
+                    //     let left = unwanted.slice(0, i)
+                    //     let right = unwanted.slice(i + 1)
+                    //     unwanted = left.concat(right)
+                    // }
                     if (card.cardLi.classList.contains("select")) {
                         unwanted.push(card)
-                    } else {
+                    } else if (unwanted.includes(card)) {
                         let i = unwanted.indexOf(card)
                         let left = unwanted.slice(0, i)
                         let right = unwanted.slice(i + 1)
@@ -633,14 +742,19 @@ class PlayerHand {
 
                     if (unwanted.length === 3) {
                         passBtn.classList.remove("hide-button")
-                        let dup = card.cardLi
+                        let dup
                         // passBtn = document.createElement("BUTTON")
                         gameboard.append(passBtn)
                         passBtn.innerHTML = "";
                         passBtn.append("PASS")
                         passBtn.addEventListener("click", () => {
-                            card.cardLi.classList.remove("select")
-                            card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                            unwanted.forEach(card => {
+                                dup = card.cardLi
+                                card.cardLi.classList.remove("select")
+                                if (card.cardLi.parentElement) {
+                                    card.cardLi.parentElement.replaceChild(dup, card.cardLi)
+                                }
+                            })
                             that.passThree(unwanted)
                             player.acceptThree(unwanted)
                             passBtn.classList.add("hide-button")
@@ -660,7 +774,7 @@ class PlayerHand {
 
         unwanted = unwanted.map(card => {
             card.hide()
-            that.playerHand.removeChild(card.cardLi) //??????
+            // that.playerHand.removeChild(card.cardLi) //??????
             let i = that.cards.indexOf(card)
             let left = that.cards.slice(0, i)
             let right = that.cards.slice(i + 1)
@@ -743,10 +857,12 @@ class Trick {
         }
         this.accept = this.accept.bind(this)
         this.show = this.show.bind(this)
+        this.getVal = this.getVal.bind(this)
+        this.logScore = this.logScore.bind(this)
         this.show()
     }
 
-    clear(){
+    clear() {
         const that = this
         let clearTrick = document.querySelector(".trick")
         if (clearTrick) {
@@ -755,14 +871,14 @@ class Trick {
         that.pile = [];
     }
 
-    show(){
+    show() {
         const that = this
         let clearTrick = document.querySelector(".trick")
-        if(clearTrick){
+        if (clearTrick) {
             gameboard.removeChild(clearTrick)
         }
         let newTrick = document.createElement("DIV")
-        
+
         gameboard.append(newTrick)
         // that.pile = that.pile.map(card => {
 
@@ -774,17 +890,17 @@ class Trick {
             newTrick.append(card.cardLi)
         })
         newTrick.classList.add("trick")
-        if(that.pile.length > 3){
-            setTimeout(() => that.clear(), 3000)
+        if (that.pile.length > 3) {
+            setTimeout(() => that.clear(), 2000)
         }
     }
 
     accept(card) {
         let dup = card
+        debugger
         const that = this
         that.pile.push(dup)
         that.show()
-        //debugger
     }
 
     changeHighest() {
@@ -812,10 +928,25 @@ class Trick {
         return this.value
     }
 
+    logScore(winner) {
+        const that = this
+        if (winner.name == "PlayerHand") {
+            playerScore += that.getVal();
+        } else {
+            if (winner.num === 0) {
+                comp0Score += that.getVal();
+            } else if (winner.num === 1) {
+                comp1Score += that.getVal();
+            } else {
+                comp2Score += that.getVal();
+            }
+        }
+    }
+
+    displayScore() {
+        gameboard.append(scoreboard)
+
+        scoreboard.append()
+    }
+
 }
-
-
-
-// add function to trick class to add to scorboard
-// call score(that.winner) in the play function of the game class on the trick instance
-// 

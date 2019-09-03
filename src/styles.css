@@ -43,12 +43,7 @@ body{
     background-color: rgb(199, 197, 197);
 }
 
-.player-hand{
-    list-style: none;
-    display: flex;
-    margin-left: 80px;
-    margin-top: -50px;
-}
+
 
 ul{
     list-style: none;
@@ -64,12 +59,27 @@ ul{
     margin-bottom: -40px;
 }
 
+.player-hand{
+    list-style: none;
+    display: flex;
+    margin-left: 80px;
+    margin-top: -50px;
+    width: 533px;
+}
+
+.comp-player-0{
+    height: 533px;
+}
+
 .comp-player-1{
     display: flex;
+    width: 533px;
 }
 
 .comp-player-2{
-    /* margin-left: 50px; */
+    position: relative;
+    left: 0;
+    height: 533px;
 }
 
 .hidden-card{

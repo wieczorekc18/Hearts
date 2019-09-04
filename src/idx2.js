@@ -26,63 +26,13 @@ start.addEventListener("click", () => {
     // }
 })
 
-
-//Add event listeners only once to all cards 
-
 class Card {
     constructor(suit, rank) {
         this.suit = suit;
         this.rank = rank;
         this.cardLi = document.createElement("LI")
         this.cardLi.classList.add("card")
-        this.addListen = this.addListen.bind(this)
-        this.useCard = this.useCard.bind(this)
-        this.validCard = false
-        // turn valid card false again when clicked
-        // periodically invalidate all player's cards
-        this.passingCard = false 
-        this.addListen()
-        this.callback
-        //
     }
-
-    addListen(){
-        const that = this
-        that.cardLi.addEventListener("click", that.useCard)
-    }
-
-    useCard(){
-        const that = this 
-        if(that.validCard){
-            if (that.cardLi.parentElement) {
-                if (that.cardLi.parentElement.classList.contains("player-hand")) {
-                    that.cardLi.parentElement.removeChild(that.cardLi)
-                    that.cardLi.classList.add("player0")
-                    let message = document.querySelector(".message")
-                    let playMessage = document.querySelector(".play-one-message")
-                    debugger
-                    if(message){
-                        message.parentElement.removeChild(message)
-                    }
-                    if (playMessage) {
-                        playMessage.parentElement.removeChild(playMessage)
-                    }
-                    that.callback()
-                }
-            }
-        }else if(that.passingCard){
-            that.cardLi.classList.toggle("select")
-            that.callback()
-        }
-    }
-    //while(notPassed){
-    //     if(unwanted.length < 3){
-            // queryselectorall(".select") returns nodelist
-            // or do if(queryselctall.length????)
-    // }else{
-        // add passbtn and addeventlistenter(click, () => player.invalidateALL && notPassed = false)
-    // }
-    // }
 
     hide() {
         this.cardLi.classList.remove("shown-card")
@@ -119,7 +69,6 @@ class Card {
         this.cardLi.classList.add("shown-card")
     }
 }
-
 
 class Deck {
     constructor() {
@@ -162,7 +111,9 @@ class Deck {
 
 }
 
-class Game{
+
+
+class Game {
     constructor() {
         this.game = document.createElement("DIV")
         this.game.classList.add("hands")
@@ -180,47 +131,6 @@ class Game{
         this.round3 = this.round3.bind(this)
         this.thePlay = this.thePlay.bind(this)
         this.players = []
-    }
-
-    round0() {
-        const that = this
-        that.comp0.selectThree(that.comp1)
-        that.comp1.selectThree(that.comp2)
-        that.comp2.selectThree(that.player)
-        that.player.show()
-        that.comp0.show()
-        that.comp1.show()
-        that.comp2.show()
-        that.roundCounter += 1
-    }
-
-    round1() {
-        const that = this
-        that.comp2.selectThree(that.comp1)
-        that.comp1.selectThree(that.comp0)
-        that.comp0.selectThree(that.player)
-        that.player.show()
-        that.comp0.show()
-        that.comp1.show()
-        that.comp2.show()
-        that.roundCounter += 1
-    }
-
-    round2() {
-        const that = this
-        that.comp2.selectThree(that.comp0)
-        that.comp0.selectThree(that.comp2)
-        that.comp1.selectThree(that.player)
-        that.player.show()
-        that.comp0.show()
-        that.comp1.show()
-        that.comp2.show()
-        that.roundCounter += 1
-    }
-
-    round3() {
-        const that = this
-        that.roundCounter = 0
     }
 
     playRound() {
@@ -385,9 +295,48 @@ class Game{
             }
         })
     }
+
+    round0() {
+        const that = this
+        that.comp0.selectThree(that.comp1)
+        that.comp1.selectThree(that.comp2)
+        that.comp2.selectThree(that.player)
+        that.player.show()
+        that.comp0.show()
+        that.comp1.show()
+        that.comp2.show()
+        that.roundCounter += 1
+    }
+
+    round1() {
+        const that = this
+        that.comp2.selectThree(that.comp1)
+        that.comp1.selectThree(that.comp0)
+        that.comp0.selectThree(that.player)
+        that.player.show()
+        that.comp0.show()
+        that.comp1.show()
+        that.comp2.show()
+        that.roundCounter += 1
+    }
+
+    round2() {
+        const that = this
+        that.comp2.selectThree(that.comp0)
+        that.comp0.selectThree(that.comp2)
+        that.comp1.selectThree(that.player)
+        that.player.show()
+        that.comp0.show()
+        that.comp1.show()
+        that.comp2.show()
+        that.roundCounter += 1
+    }
+
+    round3() {
+        const that = this
+        that.roundCounter = 0
+    }
 }
-
-
 
 class ComputerHand {
     constructor(deck, num) {
@@ -542,6 +491,8 @@ class ComputerHand {
         })
     }
 }
+
+
 class PlayerHand {
     constructor(deck) {
         this.cards = deck.deal();
@@ -580,94 +531,126 @@ class PlayerHand {
 
     }
 
-    pickLead(game){
+    pickLead(game) {
         const that = this
         let choice
         return new Promise((resolve, reject) => {
-            if (game.firstTrick && that.hasTwoOfClubs()){
+            if (game.firstTrick && that.hasTwoOfClubs()) {
                 let twoClubsMessage = document.createElement("DIV")
                 gameboard.append(twoClubsMessage)
                 twoClubsMessage.append("You have the 2 of Clubs Begin the Round by playing it")
                 twoClubsMessage.classList.add("message")
                 choice = that.cards[0]
-                let cb = () => {
-                    debugger
-                    if (choice.cardLi.classList.contains("player0")) {
-                        let idx = that.cards.indexOf(choice)
-                        let left = that.cards.slice(0, idx)
-                        let right = that.cards.slice(idx + 1)
-                        that.cards = left.concat(right)
-                        choice.validCard = false
-                        debugger
-                        resolve(choice)
+                const clickHandler = () => {
+                    if (choice.cardLi.parentElement) {
+                        choice.cardLi.parentElement.removeChild(choice.cardLi)
                     }
+                    that.cards = that.cards.slice(1)
+                    if (twoClubsMessage.parentElement) {
+                        gameboard.removeChild(twoClubsMessage)
+                    }
+                    let theCard = choice
+                    theCard.cardLi.classList.add("player0")
+                    resolve(theCard)
                 }
-                choice.validCard = true
-                choice.callback = cb
-                
-            }else if(game.heartsBroken){
+                choice.cardLi.addEventListener("click", clickHandler)
+
+            } else if (game.heartsBroken) {
                 let pickLeadMessage = document.createElement("DIV")
                 gameboard.append(pickLeadMessage)
                 pickLeadMessage.append("You won the last round lead with the card of your choice")
                 pickLeadMessage.classList.add("message")
-                options = that.cards
-                let cb = () => {
-                    let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                    debugger
-                    if (choice.length === 1) {
-                        choice = choice[0]
+                that.cards.forEach(card => {
+                    let clickHandler = () => {
+                        choice = card
+                        if (pickLeadMessage.parentElement) {
+                            gameboard.removeChild(pickLeadMessage)
+                        }
+                        if (choice.cardLi.parentElement) {
+                            choice.cardLi.parentElement.removeChild(choice.cardLi)
+                        }
                         let idx = that.cards.indexOf(choice)
                         let left = that.cards.slice(0, idx)
                         let right = that.cards.slice(idx + 1)
                         that.cards = left.concat(right)
-                        options.forEach(card => {
-                            card.validCard = false
+                        that.cards = that.cards.map(card => {
+                            card.cardLi.removeEventListener("click", clickHandler)
+                            return card
                         })
-                        debugger
-                        resolve(choice)
+                        let theCard = choice
+                        theCard.cardLi.classList.add("player0")
+                        resolve(theCard)
                     }
-                }
-                options.forEach(card => {
-                    card.validCard = true
-                    card.callback = cb
+                    card.cardLi.addEventListener("click", clickHandler)
                 })
-            }else{
+            } else {
                 let pickLeadMessage = document.createElement("DIV")
                 gameboard.append(pickLeadMessage)
                 pickLeadMessage.append("You won the last round lead with the card of your choice")
                 pickLeadMessage.classList.add("message")
                 let options = that.cards.filter(card => card.suit !== "Hearts")
-                if (options.length === 0) {
-                    options = that.cards
+                if (options.length > 0) {
+                    that.cards.forEach(card => {
+                        if (card.suit !== "Hearts") {
+                            let clickHandler = () => {
+                                choice = card
+                                if (choice.cardLi.parentElement) {
+                                    choice.cardLi.parentElement.removeChild(choice.cardLi)
+                                }
+                                if (pickLeadMessage.parentElement) {
+                                    gameboard.removeChild(pickLeadMessage)
+                                }
+                                let idx = that.cards.indexOf(choice)
+                                let left = that.cards.slice(0, idx)
+                                let right = that.cards.slice(idx + 1)
+                                that.cards = left.concat(right)
+                                let theCard = choice
+                                that.cards = that.cards.map(card => {
+                                    card.cardLi.removeEventListener("click", clickHandler)
+                                    return card
+                                })
+                                theCard.cardLi.classList.add("player0")
+                                resolve(theCard)
+                            }
+                            card.cardLi.addEventListener("click", clickHandler)
+                        }
+
+                    })
+                } else {
+                    that.cards.forEach(card => {
+                        let clickHandler = () => {
+                            choice = card
+                            if (choice.cardLi.parentElement) {
+                                choice.cardLi.parentElement.removeChild(choice.cardLi)
+                            }
+                            if (pickLeadMessage.parentElement) {
+                                gameboard.removeChild(pickLeadMessage)
+                            }
+                            let idx = that.cards.indexOf(choice)
+                            let left = that.cards.slice(0, idx)
+                            let right = that.cards.slice(idx + 1)
+                            that.cards = left.concat(right)
+                            let theCard = choice
+                            that.cards = that.cards.map(card => {
+                                card.cardLi.removeEventListener("click", clickHandler)
+                                return card
+                            })
+                            theCard.cardLi.classList.add("player0")
+                            resolve(theCard)
+                        }
+                        card.cardLi.addEventListener("click", clickHandler)
+                    })
                 }
-                let cb = () => {
-                    let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                    debugger
-                    if (choice.length === 1) {
-                        choice = choice[0]
-                        let idx = that.cards.indexOf(choice)
-                        let left = that.cards.slice(0, idx)
-                        let right = that.cards.slice(idx + 1)
-                        that.cards = left.concat(right)
-                        options.forEach(card => {
-                            card.validCard = false
-                        })
-                        debugger
-                        resolve(choice)
-                    }
-                }
-                options.forEach(card => {
-                    card.validCard = true
-                    card.callback = cb
-                })
             }
         })
     }
 
-    playOne(trick){
+    playOne(trick) {
+        //if trick.pile[0] is 2 clubs
         const that = this
         let options
         let choice
+        // debugger
         return new Promise((resolve, reject) => {
             let playOneMessage = document.createElement("DIV")
             gameboard.append(playOneMessage)
@@ -681,8 +664,10 @@ class PlayerHand {
                 }
             } else {
                 playOneMessage.append("Your turn")
+                // debugger
                 options = that.cards.filter(card => card.suit === trick.suit)
             }
+            // debugger
             if (options.length === 0) {
                 options = that.cards
             }
@@ -700,27 +685,38 @@ class PlayerHand {
             if (options.length === 0) {
                 options = that.cards
             }
-            let cb = () => {
-                let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                debugger
-                if (choice.length === 1) {
-                    choice = choice[0]
-                    debugger
-                    let idx = that.cards.indexOf(choice)
-                    let left = that.cards.slice(0, idx)
-                    let right = that.cards.slice(idx + 1)
-                    that.cards = left.concat(right)
-                    options.forEach(card => {
-                        card.validCard = false
-                    })
-                    debugger
-                    trick.accept(choice)
-                    resolve("success")
-                }
-            }
+            // debugger
             options.forEach(card => {
-                card.validCard = true
-                card.callback = cb
+                let clickHandler = () => {
+                    choice = card
+                    // debugger
+                    if (choice.cardLi.parentElement) {
+                        if (choice.cardLi.parentElement.classList.contains("player-hand")) {
+                            choice.cardLi.parentElement.removeChild(choice.cardLi)
+                        }
+                    }
+                    if (playOneMessage.parentElement) {
+                        gameboard.removeChild(playOneMessage)
+                    }
+                    let idx = that.cards.indexOf(choice)
+                    // debugger
+                    if (idx > -1 && typeof (idx) === "number") {
+                        let left = that.cards.slice(0, idx)
+                        let right = that.cards.slice(idx + 1)
+                        that.cards = left.concat(right)
+                        that.cards = that.cards.map(card => {
+                            card.cardLi.removeEventListener("click", clickHandler)
+                            return card
+                        })
+                        choice.cardLi.classList.add("player0")
+                        // debugger
+                        trick.accept(choice)
+                        // debugger
+                    }
+                    resolve("success")
+                    // debugger
+                }
+                card.cardLi.addEventListener("click", clickHandler)
             })
         })
     }
@@ -730,45 +726,57 @@ class PlayerHand {
         return new Promise((resolve, reject) => {
             let unwanted = []
             let passBtn = document.createElement("BUTTON")
-            let cb = () => {
-                if (document.querySelectorAll(".select").length === 3) {
-                    unwanted = that.cards.filter(card => card.cardLi.classList.contains("select"))
-                    passBtn.classList.remove("hide-button")
-                    gameboard.append(passBtn)
-                    passBtn.innerHTML = "";
-                    passBtn.append("PASS")
-                    passBtn.addEventListener("click", () => {
-                        that.cards.forEach(card => {
-                            card.passingCard = false
-                        })
-                        unwanted.forEach(card => card.cardLi.classList.remove("select"))
-                        that.passThree(unwanted)
-                        player.acceptThree(unwanted)
+            that.cards = that.cards.map(card => {
+                let passHandler = () => {
+                    unwanted.length < 3 ? card.cardLi.classList.toggle("select") : card.cardLi.classList.remove("select")
+                    if (card.cardLi.classList.contains("select")) {
+                        unwanted.push(card)
+                    } else if (unwanted.includes(card)) {
+                        let i = unwanted.indexOf(card)
+                        let left = unwanted.slice(0, i)
+                        let right = unwanted.slice(i + 1)
+                        unwanted = left.concat(right)
+                    }
+
+                    if (unwanted.length === 3) {
+                        passBtn.classList.remove("hide-button")
+                        // passBtn = document.createElement("BUTTON")
+                        gameboard.append(passBtn)
+                        passBtn.innerHTML = "";
+                        passBtn.append("PASS")
+                        let passBtnHandler = () => {
+                            unwanted.forEach(card => {
+                                card.cardLi.classList.remove("select")
+                            })
+                            that.passThree(unwanted)
+                            player.acceptThree(unwanted)
+                            passBtn.classList.add("hide-button")
+                            resolve("success")
+                        }
+                        passBtn.addEventListener("click", passBtnHandler)
+                    } else {
                         passBtn.classList.add("hide-button")
-                        resolve("success")
-                    })
-                } else {
-                    unwanted = []
-                    passBtn.classList.add("hide-button")
+                    }
                 }
-            }
-            that.cards.forEach(card => {
-                card.passingCard = true
-                card.callback = cb
+                card.cardLi.addEventListener("click", passHandler)
+                return card
             })
         })
     }
 
     passThree(unwanted) {
         const that = this
+
         unwanted = unwanted.map(card => {
             card.hide()
+            // that.playerHand.removeChild(card.cardLi) //??????
             let i = that.cards.indexOf(card)
             let left = that.cards.slice(0, i)
             let right = that.cards.slice(i + 1)
             that.cards = left.concat(right)
             return card;
         })
+        // return unwanted
     }
     acceptThree(passedCards) {
         const that = this
@@ -827,7 +835,6 @@ class PlayerHand {
 
 }
 
-
 class Trick {
     constructor(leadCard) {
         let dup = leadCard
@@ -852,11 +859,13 @@ class Trick {
 
     clear() {
         const that = this
+        debugger
         let clearTrick = document.querySelector(".trick")
         if (clearTrick) {
             gameboard.removeChild(clearTrick)
         }
         that.pile = [];
+        debugger
     }
 
     show() {
@@ -885,6 +894,7 @@ class Trick {
 
     accept(card) {
         const that = this
+        debugger
         let dup = card
         that.pile.push(dup)
         that.show()
@@ -931,12 +941,9 @@ class Trick {
     }
 
     displayScore() {
-        // gameboard.append(scoreboard)
+        gameboard.append(scoreboard)
 
-        // scoreboard.append()
+        scoreboard.append()
     }
 
 }
-
-
-    

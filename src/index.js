@@ -5,6 +5,8 @@ let comp1Score = 0;
 let comp2Score = 0;
 
 
+
+
 // turn event listener functions into named functions
 // entering pick lead? likely could be solved by solving above
 
@@ -14,10 +16,14 @@ const score = document.querySelector(".scoreboard")
 const start = document.querySelector(".new-game-button")
 const rules = document.querySelector(".rules-button")
 const rulesText = document.querySelector(".rules-text")
+
+
+
 rules.addEventListener("click", () => {
     rulesText.classList.toggle("show-rules")
 })
 start.addEventListener("click", () => {
+    score.classList.add("hide-score")
     gameboard.innerHTML = ""
     let game = new Game
     gameboard.append(game.game)
@@ -60,7 +66,6 @@ class Card {
                     that.cardLi.classList.add("player0")
                     let message = document.querySelector(".message")
                     let playMessage = document.querySelector(".play-one-message")
-                    debugger
                     if(message){
                         message.parentElement.removeChild(message)
                     }
@@ -178,6 +183,7 @@ class Game{
         this.round1 = this.round1.bind(this)
         this.round2 = this.round2.bind(this)
         this.round3 = this.round3.bind(this)
+        this.displayScore = this.displayScore.bind(this)
         this.thePlay = this.thePlay.bind(this)
         this.players = []
     }
@@ -223,6 +229,27 @@ class Game{
         that.roundCounter = 0
     }
 
+    displayScore() {
+        let playerUl = document.querySelector(".player-score")
+        let comp0Ul = document.querySelector(".comp0-score")
+        let comp1Ul = document.querySelector(".comp1-score")
+        let comp2Ul = document.querySelector(".comp2-score")
+        let playerScoreLi = document.createElement("LI")
+        let comp0ScoreLi = document.createElement("LI")
+        let comp1ScoreLi = document.createElement("LI")
+        let comp2ScoreLi = document.createElement("LI")
+        playerScoreLi.append(playerScore)
+        comp0ScoreLi.append(comp0Score)
+        comp1ScoreLi.append(comp1Score)
+        comp2ScoreLi.append(comp2Score)
+        playerUl.append(playerScoreLi)
+        comp0Ul.append(comp0ScoreLi)
+        comp1Ul.append(comp1ScoreLi)
+        comp2Ul.append(comp2ScoreLi)
+        debugger
+        score.classList.remove("hide-score")
+    }
+
     playRound() {
         const that = this
         that.players = []
@@ -265,7 +292,10 @@ class Game{
                                                             setTimeout(() => that.thePlay().then(() => {
                                                                 setTimeout(() => that.thePlay().then(() => {
                                                                     setTimeout(() => that.thePlay().then(() => {
-                                                                        setTimeout(() => that.thePlay(), 3000)
+                                                                        setTimeout(() => that.thePlay().then(() => {
+                                                                            debugger
+                                                                            setTimeout(() => that.displayScore(), 3000)
+                                                                        }), 3000)
                                                                     }), 3000)
                                                                 }), 3000)
                                                             }), 3000)
@@ -351,10 +381,16 @@ class Game{
                         trick = new Trick(res)
                         that.winner = that.players[idx]
                         idx = ((idx + 1) % 4)
+                        if(res.suit === "Hearts"){
+                            that.heartsBroken = true
+                        }
                         setTimeout(() => that.players[idx].playOne(trick)
                             .then(() => {
                                 if (trick.changeHighest()) {
                                     that.winner = that.players[idx]
+                                }
+                                if(trick.pile[trick.pile.length -1].suit === "Hearts"){
+                                    that.heartsBroken = true
                                 }
                                 idx = ((idx + 1) % 4)
                                 setTimeout(() => that.players[idx].playOne(trick)
@@ -362,14 +398,20 @@ class Game{
                                         if (trick.changeHighest()) {
                                             that.winner = that.players[idx]
                                         }
+                                        if (trick.pile[trick.pile.length - 1].suit === "Hearts") {
+                                            that.heartsBroken = true
+                                        }
                                         idx = ((idx + 1) % 4)
                                         setTimeout(() => {
                                             that.players[idx].playOne(trick).then(() => {
                                                 if (trick.changeHighest()) {
                                                     that.winner = that.players[idx]
                                                 }
+                                                if (trick.pile[trick.pile.length - 1].suit === "Hearts") {
+                                                    that.heartsBroken = true
+                                                }
                                                 trick.logScore(that.winner)
-                                                resolve("success")
+                                                resolve(trick)
                                             })
                                         }, 2000)
                                     })
@@ -379,10 +421,12 @@ class Game{
                 }
             }
             if (allCards.length === 0) {
-                trick.displayScore()
+                // debugger
+                // trick.displayScore()
                 that.ended = true
                 resolve("success")
             }
+            
         })
     }
 }
@@ -451,7 +495,13 @@ class ComputerHand {
         const that = this
         passedCards = passedCards.map(card => {
             that.compHand.append(card.cardLi)
-            card.cardLi.classList.toggle("rot")
+            if(that.cards[5].cardLi.classList.contains("rot")){
+                card.cardLi.classList.add("rot")
+            }else{
+                if (card.cardLi.classList.contains("rot")){
+                    card.cardLi.classList.remove("rot")
+                }
+            }
             return card
         })
         that.cards = that.cards.concat(passedCards)
@@ -468,7 +518,7 @@ class ComputerHand {
                     }
                 })
             } else if (game.heartsBroken) {
-                starter = that.cards.slice(0, 1)
+                starter = that.cards.slice(0, 1)[0]
             } else {
                 that.cards.forEach(card => {
                     if (card.suit !== "Hearts") {
@@ -476,7 +526,7 @@ class ComputerHand {
                     }
                 })
                 if (!starter) {
-                    starter = that.cards.slice(0, 1)
+                    starter = that.cards.slice(0, 1)[0]
                 }
             }
             let idx = that.cards.indexOf(starter)
@@ -523,10 +573,15 @@ class ComputerHand {
                 choice = playable[0]
             } else if (trick.suit === "Hearts") {
                 let hearts = that.cards.filter(card => card.suit === trick.suit)
-                if (hearts.first) {
-                    choice = hearts.first
+                if (hearts[0]) {
+                    choice = hearts[0]
+                    hearts.forEach(heart => {
+                        if(heart.rank > choice.rank){
+                            choice = heart
+                        }
+                    })
                 } else {
-                    choice = that.cards.first
+                    choice = that.cards[0]
                 }
             } else {
                 choice = that.cards[0]
@@ -553,6 +608,7 @@ class PlayerHand {
         this.hasTwoOfClubs = this.hasTwoOfClubs.bind(this)
         this.pickLead = this.pickLead.bind(this)
         this.playOne = this.playOne.bind(this)
+        this.num = 15
     }
 
     hasTwoOfClubs() {
@@ -591,14 +647,12 @@ class PlayerHand {
                 twoClubsMessage.classList.add("message")
                 choice = that.cards[0]
                 let cb = () => {
-                    debugger
                     if (choice.cardLi.classList.contains("player0")) {
                         let idx = that.cards.indexOf(choice)
                         let left = that.cards.slice(0, idx)
                         let right = that.cards.slice(idx + 1)
                         that.cards = left.concat(right)
                         choice.validCard = false
-                        debugger
                         resolve(choice)
                     }
                 }
@@ -610,10 +664,9 @@ class PlayerHand {
                 gameboard.append(pickLeadMessage)
                 pickLeadMessage.append("You won the last round lead with the card of your choice")
                 pickLeadMessage.classList.add("message")
-                options = that.cards
+                let options = that.cards
                 let cb = () => {
                     let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                    debugger
                     if (choice.length === 1) {
                         choice = choice[0]
                         let idx = that.cards.indexOf(choice)
@@ -623,7 +676,6 @@ class PlayerHand {
                         options.forEach(card => {
                             card.validCard = false
                         })
-                        debugger
                         resolve(choice)
                     }
                 }
@@ -642,7 +694,6 @@ class PlayerHand {
                 }
                 let cb = () => {
                     let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                    debugger
                     if (choice.length === 1) {
                         choice = choice[0]
                         let idx = that.cards.indexOf(choice)
@@ -652,7 +703,6 @@ class PlayerHand {
                         options.forEach(card => {
                             card.validCard = false
                         })
-                        debugger
                         resolve(choice)
                     }
                 }
@@ -675,7 +725,7 @@ class PlayerHand {
             if (trick.suit === "Hearts") {
                 playOneMessage.append("Your turn remember you must go up in hearts if you can")
                 trick.pile
-                options = that.cards.filter(card => card.suit === "Hearts" && card.rank > highest)
+                options = that.cards.filter(card => card.suit === "Hearts" && card.rank > trick.highest)
                 if (options.length === 0) {
                     options = that.cards.filter(card => card.suit === trick.suit)
                 }
@@ -696,16 +746,15 @@ class PlayerHand {
                         }
                     }
                 })
+                options = options.filter(card => card !== undefined)
             }
             if (options.length === 0) {
                 options = that.cards
             }
             let cb = () => {
                 let choice = options.filter(card => card.cardLi.classList.contains("player0"))
-                debugger
                 if (choice.length === 1) {
                     choice = choice[0]
-                    debugger
                     let idx = that.cards.indexOf(choice)
                     let left = that.cards.slice(0, idx)
                     let right = that.cards.slice(idx + 1)
@@ -713,7 +762,6 @@ class PlayerHand {
                     options.forEach(card => {
                         card.validCard = false
                     })
-                    debugger
                     trick.accept(choice)
                     resolve("success")
                 }
@@ -747,7 +795,12 @@ class PlayerHand {
                         passBtn.classList.add("hide-button")
                         resolve("success")
                     })
-                } else {
+                // } else if (document.querySelectorAll(".select").length > 3){
+                //     that.cards.forEach(card => card.cardLi.classList.remove("select"))
+                //     unwanted = []
+                //     passBtn.classList.add("hide-button")
+                // }
+                }else {
                     unwanted = []
                     passBtn.classList.add("hide-button")
                 }
@@ -847,6 +900,7 @@ class Trick {
         this.show = this.show.bind(this)
         this.getVal = this.getVal.bind(this)
         this.logScore = this.logScore.bind(this)
+        this.changeValue = this.changeValue.bind(this)
         this.show()
     }
 
@@ -887,6 +941,7 @@ class Trick {
         const that = this
         let dup = card
         that.pile.push(dup)
+        that.changeValue(dup)
         that.show()
     }
 
@@ -900,14 +955,15 @@ class Trick {
     }
 
     changeValue(card) {
+        const that = this
         if (card.rank === 12 && card.suit === "Spades") {
-            this.value -= 13;
+            that.value -= 13;
         } else if (card.suit === "Hearts") {
-            this.value -= 1
+            that.value -= 1
         } else if (card.rank === 11 && card.suit === "Diamonds") {
-            this.value += 10
+            that.value += 10
         } else {
-            this.value;
+            that.value;
         }
     }
 
@@ -917,26 +973,18 @@ class Trick {
 
     logScore(winner) {
         const that = this
-        if (winner.name == "PlayerHand") {
+        if (winner.num === 15) {
             playerScore += that.getVal();
+        } else if (winner.num === 0) {
+            comp0Score += that.getVal();
+        } else if (winner.num === 1) {
+            comp1Score += that.getVal();
         } else {
-            if (winner.num === 0) {
-                comp0Score += that.getVal();
-            } else if (winner.num === 1) {
-                comp1Score += that.getVal();
-            } else {
-                comp2Score += that.getVal();
-            }
+            comp2Score += that.getVal();
         }
-    }
-
-    displayScore() {
-        // gameboard.append(scoreboard)
-
-        // scoreboard.append()
     }
 
 }
 
-
+//get ul last child to find most recent score see if difference of 26
     

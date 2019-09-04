@@ -125,7 +125,7 @@ p.show-rules{
     padding: 20px;
     width: 800px;
     position: absolute;
-    z-index: 5;
+    z-index: 7;
 }
 
 .trick{
@@ -175,3 +175,15 @@ p.show-rules{
     margin-top: 50px;
     margin-left: 300px;
 } 
+
+.scoreboard{
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    background-color: aqua;
+    margin-top: 50px;
+}
+
+.hide-score{
+    display: none;
+}

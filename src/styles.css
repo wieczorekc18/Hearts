@@ -182,6 +182,10 @@ p.show-rules{
     display: flex;
     background-color: aqua;
     margin-top: 50px;
+    margin-left: 20px;
+    padding-right: 30px;
+    border: solid rgb(3, 3, 90);
+    box-shadow: 1px 1px 10px 3px black;
 }
 
 .hide-score{

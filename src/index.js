@@ -907,12 +907,12 @@ class PlayerHand {
             let passBtn = document.createElement("BUTTON")
             let cb = () => {
                 if (document.querySelectorAll(".select").length === 3) {
-                    unwanted = that.cards.filter(card => card.cardLi.classList.contains("select"))
                     passBtn.classList.remove("hide-button")
                     gameboard.append(passBtn)
                     passBtn.innerHTML = "";
                     passBtn.append("PASS")
                     passBtn.addEventListener("click", () => {
+                        unwanted = that.cards.filter(card => card.cardLi.classList.contains("select"))
                         that.cards.forEach(card => {
                             card.passingCard = false
                         })

@@ -6,10 +6,16 @@ body{
 
 .hearts-header{
     color: red;
+    margin: 0 auto;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
 }
 
 .hearts-title{
-    color: rgb(52, 205, 243);
+    color: rgb(255, 255, 255);
+    margin: 0 auto;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
 }
 
 .red-card{
@@ -23,7 +29,7 @@ body{
 }
 .gameboard{
     height: 105vh;
-    width: 90vw;
+    width: 70vw;
     background-color: green;
     position: relative;
 }

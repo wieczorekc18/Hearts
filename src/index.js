@@ -29,7 +29,22 @@ start.addEventListener("click", () => {
     gameboard.append(game.game)
     // for(let i=0; i < 200; i++){
     game.playRound()
-    // }
+        .then(() => {
+            setTimeout(() => score.classList.add("hide-score"), 5000)
+            game.playRound()
+                .then(() => {
+                    setTimeout(() => score.classList.add("hide-score"), 5000)
+                    game.playRound()
+                        .then(() => {
+                            setTimeout(() => score.classList.add("hide-score"), 5000)
+                            game.playRound()
+                                .then(() => {
+                                    setTimeout(() => score.classList.add("hide-score"), 5000)
+                                    game.playRound()
+                                })
+                        })
+                })
+        })
 })
 
 
@@ -246,7 +261,6 @@ class Game{
         comp0Ul.append(comp0ScoreLi)
         comp1Ul.append(comp1ScoreLi)
         comp2Ul.append(comp2ScoreLi)
-        debugger
         score.classList.remove("hide-score")
     }
 
@@ -270,18 +284,18 @@ class Game{
         that.comp1.show()
         that.comp2.show()
         that.players = [that.player, that.comp0, that.comp1, that.comp2]
-        if (that.roundCounter === 0) {
-            let passMessage = document.createElement("DIV")
-            gameboard.append(passMessage)
-            passMessage.append("Select 3 cards to pass to the left")
-            passMessage.classList.add("message")
-            that.player.selectThree(that.comp0)
-                .then(() => {
-                    that.round0()
-                    gameboard.removeChild(passMessage)
-                    that.thePlay()
-                        .then(() => {
-                            setTimeout(() => that.thePlay().then(() => {
+        return new Promise((resolve, reject) => {
+            if (that.roundCounter === 0) {
+                let passMessage = document.createElement("DIV")
+                gameboard.append(passMessage)
+                passMessage.append("Select 3 cards to pass to the left")
+                passMessage.classList.add("message")
+                that.player.selectThree(that.comp0)
+                    .then(() => {
+                        that.round0()
+                        gameboard.removeChild(passMessage)
+                        that.thePlay()
+                            .then(() => {
                                 setTimeout(() => that.thePlay().then(() => {
                                     setTimeout(() => that.thePlay().then(() => {
                                         setTimeout(() => that.thePlay().then(() => {
@@ -293,8 +307,12 @@ class Game{
                                                                 setTimeout(() => that.thePlay().then(() => {
                                                                     setTimeout(() => that.thePlay().then(() => {
                                                                         setTimeout(() => that.thePlay().then(() => {
-                                                                            debugger
-                                                                            setTimeout(() => that.displayScore(), 3000)
+                                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                                setTimeout(() => {
+                                                                                    resolve("success")
+                                                                                    that.displayScore()
+                                                                                }, 3000)
+                                                                            }), 3000)
                                                                         }), 3000)
                                                                     }), 3000)
                                                                 }), 3000)
@@ -306,24 +324,131 @@ class Game{
                                         }), 3000)
                                     }), 3000)
                                 }), 3000)
+                            })
+                    })
+            } else if (that.roundCounter === 1) {
+                let passMessage = document.createElement("DIV")
+                gameboard.append(passMessage)
+                passMessage.append("Select 3 cards to pass to the right")
+                passMessage.classList.add("message")
+                that.player.selectThree(that.comp2)
+                    .then(() => {
+                        that.round1()
+                        gameboard.removeChild(passMessage)
+                        that.thePlay()
+                            .then(() => {
+                                setTimeout(() => that.thePlay().then(() => {
+                                    setTimeout(() => that.thePlay().then(() => {
+                                        setTimeout(() => that.thePlay().then(() => {
+                                            setTimeout(() => that.thePlay().then(() => {
+                                                setTimeout(() => that.thePlay().then(() => {
+                                                    setTimeout(() => that.thePlay().then(() => {
+                                                        setTimeout(() => that.thePlay().then(() => {
+                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                setTimeout(() => that.thePlay().then(() => {
+                                                                    setTimeout(() => that.thePlay().then(() => {
+                                                                        setTimeout(() => that.thePlay().then(() => {
+                                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                                setTimeout(() => {
+                                                                                    resolve("success")
+                                                                                    that.displayScore()
+                                                                                }, 3000)
+                                                                            }), 3000)
+                                                                        }), 3000)
+                                                                    }), 3000)
+                                                                }), 3000)
+                                                            }), 3000)
+                                                        }), 3000)
+                                                    }), 3000)
+                                                }), 3000)
+                                            }), 3000)
+                                        }), 3000)
+                                    }), 3000)
+                                }), 3000)
+                            })
+                    })
+            } else if (that.roundCounter === 2) {
+                let passMessage = document.createElement("DIV")
+                gameboard.append(passMessage)
+                passMessage.append("Select 3 cards to pass to the player accross from you")
+                passMessage.classList.add("message")
+                
+                that.player.selectThree(that.comp1)
+                    .then(() => {
+                        that.round2()
+                        gameboard.removeChild(passMessage)
+                        that.thePlay()
+                            .then(() => {
+                                setTimeout(() => that.thePlay().then(() => {
+                                    setTimeout(() => that.thePlay().then(() => {
+                                        setTimeout(() => that.thePlay().then(() => {
+                                            setTimeout(() => that.thePlay().then(() => {
+                                                setTimeout(() => that.thePlay().then(() => {
+                                                    setTimeout(() => that.thePlay().then(() => {
+                                                        setTimeout(() => that.thePlay().then(() => {
+                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                setTimeout(() => that.thePlay().then(() => {
+                                                                    setTimeout(() => that.thePlay().then(() => {
+                                                                        setTimeout(() => that.thePlay().then(() => {
+                                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                                setTimeout(() => {
+                                                                                    resolve("success")
+                                                                                    that.displayScore()
+                                                                                }, 3000)
+                                                                            }), 3000)
+                                                                        }), 3000)
+                                                                    }), 3000)
+                                                                }), 3000)
+                                                            }), 3000)
+                                                        }), 3000)
+                                                    }), 3000)
+                                                }), 3000)
+                                            }), 3000)
+                                        }), 3000)
+                                    }), 3000)
+                                }), 3000)
+                            })
+                    })
+            } else {
+                // let passMessage = document.createElement("DIV")
+                // gameboard.append(passMessage)
+                // passMessage.append("No passing this round Hold your cards")
+                // passMessage.classList.add("pass-message")
+                that.round3()
+                // gameboard.removeChild(passMessage)
+                that.thePlay()
+                    .then(() => {
+                        setTimeout(() => that.thePlay().then(() => {
+                            setTimeout(() => that.thePlay().then(() => {
+                                setTimeout(() => that.thePlay().then(() => {
+                                    setTimeout(() => that.thePlay().then(() => {
+                                        setTimeout(() => that.thePlay().then(() => {
+                                            setTimeout(() => that.thePlay().then(() => {
+                                                setTimeout(() => that.thePlay().then(() => {
+                                                    setTimeout(() => that.thePlay().then(() => {
+                                                        setTimeout(() => that.thePlay().then(() => {
+                                                            setTimeout(() => that.thePlay().then(() => {
+                                                                setTimeout(() => that.thePlay().then(() => {
+                                                                    setTimeout(() => that.thePlay().then(() => {
+                                                                        setTimeout(() => {
+                                                                            resolve("success")
+                                                                            that.displayScore()
+                                                                        }, 3000)
+                                                                    }), 3000)
+                                                                }), 3000)
+                                                            }), 3000)
+                                                        }), 3000)
+                                                    }), 3000)
+                                                }), 3000)
+                                            }), 3000)
+                                        }), 3000)
+                                    }), 3000)
+                                }), 3000)
                             }), 3000)
-                        })
-                })
-        } else if (that.roundCounter === 1) {
-            let passMessage = document.createElement("DIV")
-            gameboard.append(passMessage)
-            passMessage.append("Select 3 cards to pass to the right")
-            passMessage.classList.add("pass-message")
-            that.player.selectThree(that.comp2).then(() => that.round1())
-        } else if (that.roundCounter === 2) {
-            let passMessage = document.createElement("DIV")
-            gameboard.append(passMessage)
-            passMessage.append("Select 3 cards to pass to the player accross from you")
-            passMessage.classList.add("pass-message")
-            that.player.selectThree(that.comp1).then(() => that.round2())
-        } else {
-            that.roundCounter = 0
-        }
+                        }), 3000)
+                    })
+            }
+        })
     }
 
     thePlay() {
@@ -335,6 +460,9 @@ class Game{
             that.players.forEach(player => {
                 allCards = allCards.concat(player.cards)
             })
+            if(allCards.length === 52){
+                that.firstTrick = true
+            }
             if (allCards.length > 0) {
                 if (that.firstTrick) {
                     that.players.forEach(player => {
@@ -421,7 +549,6 @@ class Game{
                 }
             }
             if (allCards.length === 0) {
-                // debugger
                 // trick.displayScore()
                 that.ended = true
                 resolve("success")

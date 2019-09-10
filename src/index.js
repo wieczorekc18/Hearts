@@ -201,6 +201,7 @@ class Game{
         this.displayScore = this.displayScore.bind(this)
         this.thePlay = this.thePlay.bind(this)
         this.players = []
+        this.rounds = this.rounds.bind(this)
     }
 
     round0() {
@@ -264,6 +265,40 @@ class Game{
         score.classList.remove("hide-score")
     }
 
+    rounds(){
+        const that = this
+        return new Promise((resolve, reject) => {
+            setTimeout(() => that.thePlay().then(() => {
+                setTimeout(() => that.thePlay().then(() => {
+                    setTimeout(() => that.thePlay().then(() => {
+                        setTimeout(() => that.thePlay().then(() => {
+                            setTimeout(() => that.thePlay().then(() => {
+                                setTimeout(() => that.thePlay().then(() => {
+                                    setTimeout(() => that.thePlay().then(() => {
+                                        setTimeout(() => that.thePlay().then(() => {
+                                            setTimeout(() => that.thePlay().then(() => {
+                                                setTimeout(() => that.thePlay().then(() => {
+                                                    setTimeout(() => that.thePlay().then(() => {
+                                                        setTimeout(() => that.thePlay().then(() => {
+                                                            setTimeout(() => {
+                                                                resolve("success")
+                                                                that.displayScore()
+                                                            }, 3000)
+                                                        }), 3000)
+                                                    }), 3000)
+                                                }), 3000)
+                                            }), 3000)
+                                        }), 3000)
+                                    }), 3000)
+                                }), 3000)
+                            }), 3000)
+                        }), 3000)
+                    }), 3000)
+                }), 3000)
+            }), 3000)
+        })
+    }
+
     playRound() {
         const that = this
         that.players = []
@@ -296,34 +331,7 @@ class Game{
                         gameboard.removeChild(passMessage)
                         that.thePlay()
                             .then(() => {
-                                setTimeout(() => that.thePlay().then(() => {
-                                    setTimeout(() => that.thePlay().then(() => {
-                                        setTimeout(() => that.thePlay().then(() => {
-                                            setTimeout(() => that.thePlay().then(() => {
-                                                setTimeout(() => that.thePlay().then(() => {
-                                                    setTimeout(() => that.thePlay().then(() => {
-                                                        setTimeout(() => that.thePlay().then(() => {
-                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                setTimeout(() => that.thePlay().then(() => {
-                                                                    setTimeout(() => that.thePlay().then(() => {
-                                                                        setTimeout(() => that.thePlay().then(() => {
-                                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                                setTimeout(() => {
-                                                                                    resolve("success")
-                                                                                    that.displayScore()
-                                                                                }, 3000)
-                                                                            }), 3000)
-                                                                        }), 3000)
-                                                                    }), 3000)
-                                                                }), 3000)
-                                                            }), 3000)
-                                                        }), 3000)
-                                                    }), 3000)
-                                                }), 3000)
-                                            }), 3000)
-                                        }), 3000)
-                                    }), 3000)
-                                }), 3000)
+                                that.rounds().then(() => resolve("success"))
                             })
                     })
             } else if (that.roundCounter === 1) {
@@ -337,34 +345,7 @@ class Game{
                         gameboard.removeChild(passMessage)
                         that.thePlay()
                             .then(() => {
-                                setTimeout(() => that.thePlay().then(() => {
-                                    setTimeout(() => that.thePlay().then(() => {
-                                        setTimeout(() => that.thePlay().then(() => {
-                                            setTimeout(() => that.thePlay().then(() => {
-                                                setTimeout(() => that.thePlay().then(() => {
-                                                    setTimeout(() => that.thePlay().then(() => {
-                                                        setTimeout(() => that.thePlay().then(() => {
-                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                setTimeout(() => that.thePlay().then(() => {
-                                                                    setTimeout(() => that.thePlay().then(() => {
-                                                                        setTimeout(() => that.thePlay().then(() => {
-                                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                                setTimeout(() => {
-                                                                                    resolve("success")
-                                                                                    that.displayScore()
-                                                                                }, 3000)
-                                                                            }), 3000)
-                                                                        }), 3000)
-                                                                    }), 3000)
-                                                                }), 3000)
-                                                            }), 3000)
-                                                        }), 3000)
-                                                    }), 3000)
-                                                }), 3000)
-                                            }), 3000)
-                                        }), 3000)
-                                    }), 3000)
-                                }), 3000)
+                                that.rounds().then(() => resolve("success"))
                             })
                     })
             } else if (that.roundCounter === 2) {
@@ -379,34 +360,7 @@ class Game{
                         gameboard.removeChild(passMessage)
                         that.thePlay()
                             .then(() => {
-                                setTimeout(() => that.thePlay().then(() => {
-                                    setTimeout(() => that.thePlay().then(() => {
-                                        setTimeout(() => that.thePlay().then(() => {
-                                            setTimeout(() => that.thePlay().then(() => {
-                                                setTimeout(() => that.thePlay().then(() => {
-                                                    setTimeout(() => that.thePlay().then(() => {
-                                                        setTimeout(() => that.thePlay().then(() => {
-                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                setTimeout(() => that.thePlay().then(() => {
-                                                                    setTimeout(() => that.thePlay().then(() => {
-                                                                        setTimeout(() => that.thePlay().then(() => {
-                                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                                setTimeout(() => {
-                                                                                    resolve("success")
-                                                                                    that.displayScore()
-                                                                                }, 3000)
-                                                                            }), 3000)
-                                                                        }), 3000)
-                                                                    }), 3000)
-                                                                }), 3000)
-                                                            }), 3000)
-                                                        }), 3000)
-                                                    }), 3000)
-                                                }), 3000)
-                                            }), 3000)
-                                        }), 3000)
-                                    }), 3000)
-                                }), 3000)
+                                that.rounds().then(() => resolve("success"))
                             })
                     })
             } else {
@@ -418,34 +372,7 @@ class Game{
                 // gameboard.removeChild(passMessage)
                 that.thePlay()
                     .then(() => {
-                        setTimeout(() => that.thePlay().then(() => {
-                            setTimeout(() => that.thePlay().then(() => {
-                                setTimeout(() => that.thePlay().then(() => {
-                                    setTimeout(() => that.thePlay().then(() => {
-                                        setTimeout(() => that.thePlay().then(() => {
-                                            setTimeout(() => that.thePlay().then(() => {
-                                                setTimeout(() => that.thePlay().then(() => {
-                                                    setTimeout(() => that.thePlay().then(() => {
-                                                        setTimeout(() => that.thePlay().then(() => {
-                                                            setTimeout(() => that.thePlay().then(() => {
-                                                                setTimeout(() => that.thePlay().then(() => {
-                                                                    setTimeout(() => that.thePlay().then(() => {
-                                                                        setTimeout(() => {
-                                                                            resolve("success")
-                                                                            that.displayScore()
-                                                                        }, 3000)
-                                                                    }), 3000)
-                                                                }), 3000)
-                                                            }), 3000)
-                                                        }), 3000)
-                                                    }), 3000)
-                                                }), 3000)
-                                            }), 3000)
-                                        }), 3000)
-                                    }), 3000)
-                                }), 3000)
-                            }), 3000)
-                        }), 3000)
+                        that.rounds()
                     })
             }
         })

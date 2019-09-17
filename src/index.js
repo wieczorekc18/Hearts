@@ -16,8 +16,11 @@ const score = document.querySelector(".scoreboard")
 const start = document.querySelector(".new-game-button")
 const rules = document.querySelector(".rules-button")
 const rulesText = document.querySelector(".rules-text")
+const rulesX = document.querySelector(".rules-x")
 
-
+rulesX.addEventListener("click", ()=>{
+    rulesText.classList.remove("show-rules")
+})
 
 rules.addEventListener("click", () => {
     rulesText.classList.toggle("show-rules")

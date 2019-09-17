@@ -17,6 +17,17 @@ const start = document.querySelector(".new-game-button")
 const rules = document.querySelector(".rules-button")
 const rulesText = document.querySelector(".rules-text")
 const rulesX = document.querySelector(".rules-x")
+const scoreButton = document.querySelector(".score-button")
+
+const scoreX = document.querySelector(".score-x")
+
+scoreButton.addEventListener("click", ()=>{
+    score.classList.toggle("hide-score")
+})
+
+scoreX.addEventListener("click", ()=>{
+    score.classList.add("hide-score")
+})
 
 rulesX.addEventListener("click", ()=>{
     rulesText.classList.remove("show-rules")
@@ -33,16 +44,16 @@ start.addEventListener("click", () => {
     // for(let i=0; i < 200; i++){
     game.playRound()
         .then(() => {
-            setTimeout(() => score.classList.add("hide-score"), 5000)
+            // setTimeout(() => score.classList.add("hide-score"), 5000)
             game.playRound()
                 .then(() => {
-                    setTimeout(() => score.classList.add("hide-score"), 5000)
+                    // setTimeout(() => score.classList.add("hide-score"), 5000)
                     game.playRound()
                         .then(() => {
-                            setTimeout(() => score.classList.add("hide-score"), 5000)
+                            // setTimeout(() => score.classList.add("hide-score"), 5000)
                             game.playRound()
                                 .then(() => {
-                                    setTimeout(() => score.classList.add("hide-score"), 5000)
+                                    // setTimeout(() => score.classList.add("hide-score"), 5000)
                                     game.playRound()
                                 })
                         })

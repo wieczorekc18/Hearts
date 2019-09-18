@@ -19,11 +19,11 @@ const rulesText = document.querySelector(".rules-text")
 const rulesX = document.querySelector(".rules-x")
 const scoreButton = document.querySelector(".score-button")
 
-const scoreX = document.querySelector(".score-x")
+// const scoreX = document.querySelector(".score-x")
 
-// scoreButton.addEventListener("click", ()=>{
-//     score.classList.toggle("hide-score")
-// })
+scoreButton.addEventListener("click", ()=>{
+    score.classList.toggle("hide-score")
+})
 
 // scoreX.addEventListener("click", ()=>{
 //     score.classList.add("hide-score")

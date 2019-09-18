@@ -198,3 +198,34 @@ p.show-rules{
 .hide-score{
     display: none;
 }
+
+.rules-button-clicked{
+    background-color: rgb(31, 132, 248);
+}
+
+.rules-button{
+    border: none;
+    width: auto;
+    overflow: visible;
+    border-radius: 3px;
+    color: black;
+    /* line-height: normal; */
+}
+
+.rules-button:active{
+    background-color: rgb(31, 132, 248);
+}
+
+.score-button{
+    border: none;
+    width: auto;
+    overflow: visible;
+    border-radius: 3px;
+    color: black;
+    /* line-height: normal; */
+    background-color: white;
+}
+
+.score-button-unclicked{
+    background-color: white;
+}

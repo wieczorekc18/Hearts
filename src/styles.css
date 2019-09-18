@@ -199,9 +199,9 @@ p.show-rules{
     display: none;
 }
 
-.rules-button-clicked{
+/* .rules-button-clicked{
     background-color: rgb(31, 132, 248);
-}
+} */
 
 .rules-button{
     border: none;

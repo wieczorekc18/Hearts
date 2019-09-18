@@ -21,13 +21,14 @@ const scoreButton = document.querySelector(".score-button")
 
 const scoreX = document.querySelector(".score-x")
 
-// scoreButton.addEventListener("click", ()=>{
-//     score.classList.toggle("hide-score")
-// })
+scoreButton.addEventListener("click", ()=>{
+    score.classList.toggle("hide-score")
+})
 
-// scoreX.addEventListener("click", ()=>{
-//     score.classList.add("hide-score")
-// })
+scoreX.addEventListener("click", ()=>{
+    debugger
+    score.classList.add("hide-score")
+})
 
 rulesX.addEventListener("click", ()=>{
     rulesText.classList.remove("show-rules")

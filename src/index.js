@@ -5,6 +5,7 @@ let comp1Score = 0;
 let comp2Score = 0;
 
 
+//playRound() after last thePlay() with play again? modal?
 
 
 // turn event listener functions into named functions
@@ -17,7 +18,7 @@ const start = document.querySelector(".new-game-button")
 const rules = document.querySelector(".rules-button")
 const rulesText = document.querySelector(".rules-text")
 // const rulesX = document.querySelector(".rules-x")
-const scoreButton = document.querySelector(".score-button")
+// const scoreButton = document.querySelector(".score-button")
 
 // const scoreX = document.querySelector(".score-x")
 
